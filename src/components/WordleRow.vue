@@ -148,26 +148,28 @@ export default {
             }
             let word = {}
             // let numberOfSubmissions = 0
-            if (refs.letter1.letterInput !== '') {
-                word.letter1 = refs.letter1.letterInput
+            if (refs.letter1.letterInputLower !== '') {
+                word.letter1 = refs.letter1.letterInputLower
             }
-            if (refs.letter2.letterInput !== '') {
-                word.letter2 = refs.letter2.letterInput
+            if (refs.letter2.letterInputLower !== '') {
+                word.letter2 = refs.letter2.letterInputLower
             }
-            if (refs.letter3.letterInput !== '') {
-                word.letter3 = refs.letter3.letterInput
+            if (refs.letter3.letterInputLower !== '') {
+                word.letter3 = refs.letter3.letterInputLower
             }
-            if (refs.letter4.letterInput !== '') {
-                word.letter4 = refs.letter4.letterInput
+            if (refs.letter4.letterInputLower !== '') {
+                word.letter4 = refs.letter4.letterInputLower
             }
-            if (refs.letter5.letterInput !== '') {
-                word.letter5 = refs.letter5.letterInput
+            if (refs.letter5.letterInputLower !== '') {
+                word.letter5 = refs.letter5.letterInputLower
             }
 
 
             console.log(Object.keys(word).length)
             if (Object.keys(word).length !== 5) {
                 refs.container.classList.add('shake')
+                console.log("WOOOOOOOOOOOOOOOO")
+                console.log(word)
 
                 return setTimeout(
                     () => refs.container.classList.remove('shake'),
@@ -175,11 +177,15 @@ export default {
                 )
             }
             let wordString =
-                refs.letter1.letterInput +
-                refs.letter2.letterInput +
-                refs.letter3.letterInput +
-                refs.letter4.letterInput +
-                refs.letter5.letterInput
+                (refs.letter1.letterInputLower +
+                refs.letter2.letterInputLower +
+                refs.letter3.letterInputLower +
+                refs.letter4.letterInputLower +
+                refs.letter5.letterInputLower)
+
+                console.log(Words.words)
+                console.log(Answers.words)
+                console.log(wordString)
             
             if (!(Answers.words.includes(wordString) || Words.words.includes(wordString))) {
                 refs.container.classList.add('shake')

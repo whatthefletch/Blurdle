@@ -123,11 +123,11 @@ export default {
             }
             let word = {}
             // let numberOfSubmissions = 0
-            word.letter1 = refs.letter1.letterInput
-            word.letter2 = refs.letter2.letterInput
-            word.letter3 = refs.letter3.letterInput
-            word.letter4 = refs.letter4.letterInput
-            word.letter5 = refs.letter5.letterInput
+            word.letter1 = refs.letter1.letterInputLower
+            word.letter2 = refs.letter2.letterInputLower
+            word.letter3 = refs.letter3.letterInputLower
+            word.letter4 = refs.letter4.letterInputLower
+            word.letter5 = refs.letter5.letterInputLower
             console.log(word)
             Object.keys(word).forEach((letter) => {
                 let lowercaseLetter = word[letter].toLowerCase()

@@ -75,6 +75,7 @@ export default {
             completeClass: '',
             animation: '',
             animation2: '',
+            letterInputLower: ''
         }
     },
     methods: {
@@ -107,9 +108,17 @@ export default {
         changeCurrentValue: function (e) {
             let char = String.fromCharCode(e.keyCode)
             console.log(e)
-            console.log(this.$refs.documentLetterInput.value)
-            if (/^[A-Za-z]+$/.test(char)) return this.$refs.documentLetterInput.value = e.key
-            else e.preventDefault() // If not match, don't add to input text
+
+            if (/^[A-Za-z]+$/.test(char)) {
+                console.log(this.$refs.documentLetterInput.value)
+                console.log(this.letterInput)
+                return (this.letterInput = char)
+            }
+            if (e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 13) {
+                return
+            } else {
+                e.preventDefault() // If not match, don't add to input text
+            }
         },
     },
     mounted: function () {
@@ -131,7 +140,8 @@ export default {
             typeof this.correctLetter !== 'undefined' &&
             typeof this.completeLetter !== undefined
         ) {
-            if (this.correctLetter === this.completeLetter) {
+            
+            if (this.correctLetter.toLowerCase() === this.completeLetter.toLowerCase()) {
                 this.correctClass = 'correct'
             }
             console.log(this.correctLetters)
@@ -147,7 +157,12 @@ export default {
             }
         }
     },
-    watch: {},
+    watch: {letterInput: function (newValue, oldValue) {
+        if (newValue !== oldValue) {
+            this.letterInputLower = this.letterInput.toLowerCase()
+            
+        }
+    }},
 }
 </script>
 
