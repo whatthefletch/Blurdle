@@ -23,10 +23,10 @@
             type="text"
             maxlength="1"
             style="text-transform: uppercase"
-            v-on:keyup.enter="nextOrSubmit()"
-            v-on:keyup.left="previous()"
-            v-on:keyup.right="next()"
-            v-on:keyup="changeCurrentValue($event)"
+            @keydown.left="previous()"
+            @keydown.right="next()"
+            v-on:keypress="changeCurrentValue($event)"
+
             placeholder=" "
         />
 
@@ -106,10 +106,26 @@ export default {
             else e.preventDefault() // If not match, don't add to input text
         },
         changeCurrentValue: function (e) {
+            console.log(e.keyCode)
+            if (e.keyCode === 13) {
+                return this.nextOrSubmit()
+            }
+            if (e.keyCode === 9) {
+                return this.next()
+            }
+
+            if (e.keyCode === 39) {
+                return this.next()
+            }
+
+            if (e.keyCode === 37) {
+                return this.previous()
+            }
+
             let char = String.fromCharCode(e.keyCode)
             console.log(e)
             let nextElement = false
-            if (this.letterInput.length === 1) {
+            if (this.letterInput.length === 0) {
                 nextElement = true
             }
 
@@ -122,11 +138,8 @@ export default {
 
                 return (this.letterInput = char)
             }
-            if (e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 13) {
-                return
-            } else {
-                e.preventDefault() // If not match, don't add to input text
-            }
+            
+            e.preventDefault() // If not match, don't add to input text
         },
     },
     mounted: function () {
