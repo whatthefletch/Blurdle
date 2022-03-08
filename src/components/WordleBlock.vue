@@ -23,10 +23,10 @@
             type="text"
             maxlength="1"
             style="text-transform: uppercase"
-            v-on:keydown.enter="nextOrSubmit()"
-            v-on:keydown.left="previous()"
-            v-on:keydown.right="next()"
-            v-on:keydown="changeCurrentValue($event)"
+            v-on:keyup.enter="nextOrSubmit()"
+            v-on:keyup.left="previous()"
+            v-on:keyup.right="next()"
+            v-on:keyup="changeCurrentValue($event)"
             placeholder=" "
         />
 
@@ -75,7 +75,7 @@ export default {
             completeClass: '',
             animation: '',
             animation2: '',
-            letterInputLower: ''
+            letterInputLower: '',
         }
     },
     methods: {
@@ -108,10 +108,18 @@ export default {
         changeCurrentValue: function (e) {
             let char = String.fromCharCode(e.keyCode)
             console.log(e)
+            let nextElement = false
+            if (this.letterInput.length === 1) {
+                nextElement = true
+            }
 
             if (/^[A-Za-z]+$/.test(char)) {
                 console.log(this.$refs.documentLetterInput.value)
                 console.log(this.letterInput)
+                if (nextElement) {
+                    this.next()
+                }
+
                 return (this.letterInput = char)
             }
             if (e.keyCode === 8 || e.keyCode === 9 || e.keyCode === 13) {
@@ -140,8 +148,10 @@ export default {
             typeof this.correctLetter !== 'undefined' &&
             typeof this.completeLetter !== undefined
         ) {
-            
-            if (this.correctLetter.toLowerCase() === this.completeLetter.toLowerCase()) {
+            if (
+                this.correctLetter.toLowerCase() ===
+                this.completeLetter.toLowerCase()
+            ) {
                 this.correctClass = 'correct'
             }
             console.log(this.correctLetters)
@@ -157,12 +167,13 @@ export default {
             }
         }
     },
-    watch: {letterInput: function (newValue, oldValue) {
-        if (newValue !== oldValue) {
-            this.letterInputLower = this.letterInput.toLowerCase()
-            
-        }
-    }},
+    watch: {
+        letterInput: function (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.letterInputLower = this.letterInput.toLowerCase()
+            }
+        },
+    },
 }
 </script>
 

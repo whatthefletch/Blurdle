@@ -22,10 +22,25 @@
                     You guessed the word {{ word.toUpperCase() }} in
                     {{ currentRow }} guess{{ currentRow > 1 ? 'es' : '' }}.
                 </p>
-                <button class="button" @click="resetGame()">Play Again</button>
+                <button class="button" @click="resetGame()">Play Again?</button>
             </div>
         </div>
-        <div class="help">
+        <div class="popup" v-if="currentRow>=6">
+            <div class="slide popup-background"></div>
+            <div class="popup-content slide">
+                <h1 class="grow">
+                    <em>TRASH!
+                        </em>
+                </h1>
+                <p class="popup-info">
+                    You lost, bud. <br>The word was {{ word.toUpperCase() }}.<br/>
+                    Better luck next time.
+                </p>
+                <button class="button" @click="resetGame()">Play Again?</button>
+            </div>
+        </div>
+        <div class="help" @click="flipped = !flipped" :class="{tucked:flipped}">
+            <p class="bottom-arrow"  :class="{flipped:flipped}">^</p>
             <p>
                 Use the ← or → arrows to switch between blocks.<br />Submit your
                 guess with Enter.
@@ -211,6 +226,7 @@ export default {
             correctLetters: [],
             complete: false,
             noBlur: false,
+            flipped: false
         }
     },
     mounted: function () {
@@ -239,15 +255,14 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap');
 h3 {
-    margin: 40px 0 0 0;
+    margin: 40px auto 0 auto;
     font-size: 80px;
-    position: absolute;
-    top: 0;
-    width: 100vw;
+    text-align: center;
     color: #ffffff;
     filter: blur(3px);
     transition: filter 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
     text-shadow: #ffffff 0 0 10px;
+    max-width: 400px;
 }
 
 h3:hover {
@@ -278,7 +293,7 @@ a {
 }
 
 .wordle-container {
-    padding: 150px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -292,7 +307,7 @@ a {
     width: 100vw;
     background-color: #00000088;
     position: absolute;
-    z-index: 99999999;
+    z-index: 999999999999999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,25 +344,53 @@ a {
     position: absolute;
     bottom: 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-content: center;
     justify-content: center;
     align-items: center;
     width: 100vw;
     overflow: hidden;
+    transition: transform 0.9s cubic-bezier(.18,.73,0,1.01);
+    transform: translateY(0px);
+    cursor: pointer;
+    z-index: 99999999;
 }
 
 .help p {
     color: #ffffff;
     font-size: 24px;
     padding-bottom: 40px;
+    pointer-events: none;
+    
 }
+
+.bottom-arrow {
+    padding: 10px !important;
+    transform: scaleY(-0.5) translateY(5px);
+    transition: transform 0.3s ease-out;
+    cursor: pointer;
+}
+.bottom-arrow:hover {
+
+    transform: scaleY(-0.6) translateY(-5px);
+}
+
+.flipped {
+    transform: scaleY(0.5) translateY(5px);
+}
+
+.flipped:hover {
+
+    transform: scaleY(0.6) translateY(-5px);
+
+}
+
 
 html,
 body {
     padding: 0;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 .button {
@@ -412,7 +455,7 @@ html {
 }
 .popup-background {
     position: relative;
-    background-color: #ffffff77;
+    background-color: #ffffff33;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -423,14 +466,14 @@ html {
     width: 300px;
     height: 300px;
     border-radius: 30px;
-    filter: blur(40px) !important;
+    filter: blur(200px) !important;
 }
 
 .remove-blur-bar {
     position: absolute;
     right: 0;
-    bottom: 0;
-    margin: 15px;
+    top: 0;
+    margin: 10px;
 }
 
 /* The switch - the box around the slider */
@@ -458,8 +501,10 @@ html {
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
+
+    transition: all 1s cubic-bezier(.18,.73,0,1.01);
+    box-shadow: 1px 1px 8px #00000099;
+    filter:blur(2px);
 }
 
 .slider:before {
@@ -469,18 +514,19 @@ html {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
+    background-color: rgb(255, 255, 255);
+
+    transition: all 1s cubic-bezier(.18,.73,0,1.01);
+    
 }
 
 input:checked + .slider {
-    background-color: #2196f3;
+    background-color: #42b983;
+    box-shadow: 1px 1px 8px #00000099;
+    filter: saturate(1)
 }
 
-input:focus + .slider {
-    box-shadow: 0 0 1px #2196f3;
-}
+
 
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
@@ -495,5 +541,9 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+.tucked {
+    transform: translateY(75%);
 }
 </style>

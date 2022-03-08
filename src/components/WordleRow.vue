@@ -135,6 +135,8 @@ export default {
         let thisWord = this.word
         let thisCorrectLetters = this.correctLetters
 
+        refs.letter1.$refs.documentLetterInput.focus()
+
         this.letter1 = this.word.substring(0, 1)
         this.letter2 = this.word.substring(1, 2)
         this.letter3 = this.word.substring(2, 3)
